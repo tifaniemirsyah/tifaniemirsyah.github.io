@@ -30,7 +30,7 @@ box-shadow:0 40px 90px -40px #3a1c2e55,0 2px 0 #ffffff80 inset;overflow:hidden;d
 .card.glow{box-shadow:0 50px 100px -40px var(--a),0 2px 0 #ffffff80 inset;transform:scale(1.008)}
 .kicker{display:flex;gap:.5em 1.6em;justify-content:center;flex-wrap:wrap;margin:0;padding:0 .5em;font:400 clamp(10px,2.9vw,15px)/1.9 var(--brand);letter-spacing:.24em;color:var(--ink)}
 .b{color:var(--boy)}.g{color:var(--girl)}
-.names{font:400 clamp(1.4rem,9vw,2.0rem)/1.7 var(--script);color:var(--ink);margin:16px 0 10px;padding:0 .3em}
+.names{font:400 clamp(1.4rem,9vw,1.8rem)/1.7 var(--script);color:var(--ink);margin:16px 0 10px;padding:0 .3em}
 h1{font:400 clamp(11px,3.2vw,15px)/1.5 var(--brand);letter-spacing:.3em;padding-left:.3em;margin:8px 0 0;color:var(--ink)}
 .big{font:400 clamp(7rem,34vw,13rem)/1 'Brittany He She','Brittany Signature',cursive;letter-spacing:0;line-height:1.4;color:var(--a);padding:.05em .15em;margin:.1em 0 .15em}
 #post:not(.hidden){animation:bloom 1.2s var(--ease) both}
@@ -127,13 +127,13 @@ footer{width:100%;display:flex;flex-direction:column;align-items:center}
  <div class="flash" id="flash"></div>
  <header>
   <div id="pre"><p class="kicker" style="font-size:clamp(14px,4vw,19px)">WELCOME</p></div>
-	<div id="preFoot">
-		<p class="hos-t"><span class="b">he</span> or <span class="g">she</span></p>
-		<p class="kicker" style="font-size:clamp(10px,2.8vw,13px)">WHAT WILL BABY GENKI-CHAN BE?</p>
-		<div class="pills" role="group" aria-label="Make your guess" id="guess">
-		<button class="pill boy" aria-pressed="false" data-g="boy">TEAM BOY</button>
-		<button class="pill girl" aria-pressed="false" data-g="girl">TEAM GIRL</button>
-	</div>
+  <div id="preFoot">
+    <p class="hos-t"><span class="b">he</span> or <span class="g">she</span></p>
+    <p class="kicker" style="font-size:clamp(10px,2.8vw,13px)">WHAT WILL BABY GENKI-CHAN BE?</p>
+    <div class="pills" role="group" aria-label="Make your guess" id="guess">
+    <button class="pill boy" aria-pressed="false" data-g="boy">TEAM BOY</button>
+    <button class="pill girl" aria-pressed="false" data-g="girl">TEAM GIRL</button>
+  </div>
   </div>
   <div id="post" class="hidden" aria-live="polite">
    <p class="lead">With love from <span id="names2"></span></p>
