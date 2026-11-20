@@ -30,7 +30,7 @@ body.done .mesh.post{opacity:.7}body.done .mesh:not(.post){opacity:0}
 background:var(--glass);-webkit-backdrop-filter:blur(26px) saturate(1.2);backdrop-filter:blur(26px) saturate(1.2);border:1px solid #ffffff99;
 box-shadow:0 40px 90px -40px #3a1c2e55,0 2px 0 #ffffff80 inset;overflow:hidden;display:flex;flex-direction:column;align-items:center;justify-content:space-between;transition:box-shadow 1.2s var(--ease),transform 1.2s var(--ease)}
 .card.glow{box-shadow:0 50px 100px -40px var(--a),0 2px 0 #ffffff80 inset;transform:scale(1.008)}
-.kicker{display:flex;gap:.5em 1.6em;justify-content:center;flex-wrap:wrap;margin:0;padding:0 .5em;font:400 clamp(10px,2.9vw,15px)/1.9 var(--brand);letter-spacing:.24em;color:var(--ink)}
+.kicker{display:flex;gap:.5em .8em;justify-content:center;flex-wrap:wrap;margin:0;padding:0 .5em;font:400 clamp(10px,2.9vw,15px)/1.9 var(--brand);letter-spacing:.24em;color:var(--ink)}
 .b{color:var(--boy)}.g{color:var(--girl)}
 .names{font:400 clamp(1.4rem,9vw,1.8rem)/1.7 var(--script);color:var(--ink);margin:16px 0 10px;padding:0 .3em}
 h1{font:400 clamp(11px,3.2vw,15px)/1.5 var(--brand);letter-spacing:.3em;padding-left:.3em;margin:8px 0 0;color:var(--ink)}
@@ -142,7 +142,7 @@ footer{width:100%;display:flex;flex-direction:column;align-items:center}
  </section>
  <footer>
   <div id="preFoot">
-   <p class="kicker"><span>PURRHAPS A</span><span class="b">BOY?</span><span>PURRHAPS A</span><span class="g">GIRL?</span></p>
+   <p class="kicker"><span>PURRHAPS A <span class="b">BOY?</span></span><span>PURRHAPS A <span class="g">GIRL?</span></span></p>
    <p class="names" id="names">Emirsyah &amp; Tifani’s</p>
    <h1>GENDER REVEAL</h1>
   </div>
@@ -192,8 +192,20 @@ document.querySelectorAll('.pill').forEach(p => p.onclick = () => state === 'idl
 if (guess) setGuess(guess);
 
 /* ---- audio (unlocked on user interaction) ---- */
+/* iPhone: Web Audio is muted by the ring/silent switch. Switching the page to the "playback" audio
+   category (and looping an inaudible clip) makes the chimes play even in silent mode. */
+const SILENT_WAV = 'data:audio/wav;base64,UklGRvQHAABXQVZFZm10IBAAAAABAAEAQB8AAEAfAAABAAgAZGF0YdAHAACAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgA==';
+let silentEl = null;
+function unlockPlayback() {
+  try { if (navigator.audioSession) navigator.audioSession.type = 'playback'; } catch (e) {}
+  try {
+    if (!silentEl) { silentEl = new Audio(SILENT_WAV); silentEl.loop = true; silentEl.setAttribute('playsinline', ''); silentEl.preload = 'auto'; }
+    if (silentEl.paused) { const pr = silentEl.play(); if (pr && pr.catch) pr.catch(() => {}); }
+  } catch (e) {}
+}
 async function ensureAudio() {
   if (!sound) return null;
+  unlockPlayback();
   try {
     if (!ac) {
       const C = window.AudioContext || window.webkitAudioContext;
@@ -232,6 +244,7 @@ function chimeFanfare() { [523.25, 659.25, 783.99, 987.77, 1046.5, 1318.51].forE
 const SND_ON = '<svg viewBox="0 0 24 24" width="20" height="20" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M4 9.5h3.5L12 5.5v13l-4.5-4H4z" fill="currentColor" fill-opacity=".15"/><path d="M15.5 9a4 4 0 0 1 0 6M18 6.5a7.5 7.5 0 0 1 0 11"/></svg>', SND_OFF = '<svg viewBox="0 0 24 24" width="20" height="20" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M4 9.5h3.5L12 5.5v13l-4.5-4H4z" fill="currentColor" fill-opacity=".15"/><path d="M16 9.5l5 5M21 9.5l-5 5"/></svg>';
 function toggleSound() {
   sound = !sound; const b = $('snd');
+  if (silentEl && !sound) silentEl.pause();
   b.innerHTML = sound ? SND_ON : SND_OFF; b.setAttribute('aria-pressed', sound); b.setAttribute('aria-label', sound ? 'Sound on' : 'Sound off'); b.title = sound ? 'Sound on' : 'Sound off';
   if (sound) tone(587.33, .25, 0, .05);
 }
