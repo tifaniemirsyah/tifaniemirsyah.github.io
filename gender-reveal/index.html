@@ -208,17 +208,33 @@ function setGuess(g) {
 document.querySelectorAll('.pill').forEach(p => p.onclick = () => state === 'idle' && setGuess(p.dataset.g));
 if (guess) setGuess(guess);
 
-/* ---- audio (unlocked on first touch) ---- */
-function ctx() {
-  if (!ac) { const C = window.AudioContext || window.webkitAudioContext; if (C) ac = new C(); }
-  if (ac && ac.state === 'suspended') ac.resume();
-  return ac;
+/* ---- audio (unlocked on user interaction) ---- */
+async function ensureAudio() {
+  if (!sound) return null;
+  try {
+    if (!ac) {
+      const C = window.AudioContext || window.webkitAudioContext;
+      if (C) ac = new C();
+    }
+    if (ac && ac.state === 'suspended') {
+      await ac.resume();
+    }
+    return ac;
+  } catch (e) {
+    return null;
+  }
 }
-addEventListener('pointerdown', () => ctx(), { once: true });
-function tone(f, d = .8, delay = 0, v = .08) {
+
+['pointerdown', 'touchstart', 'keydown'].forEach(ev => {
+  addEventListener(ev, () => { if (sound) ensureAudio(); }, { passive: true });
+});
+
+async function tone(f, d = .8, delay = 0, v = .08) {
   if (!sound) return;
   try {
-    const c = ctx(); if (!c) return; const t = c.currentTime + delay;
+    const c = await ensureAudio();
+    if (!c) return;
+    const t = c.currentTime + delay;
     const o = c.createOscillator(), h = c.createOscillator(), g = c.createGain(), hg = c.createGain();
     o.type = 'sine'; h.type = 'triangle'; o.frequency.value = f; h.frequency.value = f * 2;
     hg.gain.setValueAtTime(v * .25, t); hg.gain.exponentialRampToValueAtTime(.0001, t + d * .6);
@@ -227,11 +243,13 @@ function tone(f, d = .8, delay = 0, v = .08) {
     o.start(t); h.start(t); o.stop(t + d); h.stop(t + d);
   } catch (e) {}
 }
+
 const TICKS = { 10: 261.63, 9: 293.66, 8: 329.63, 7: 349.23, 6: 392, 5: 523.25, 4: 587.33, 3: 659.25, 2: 698.46, 1: 783.99 };
 function chimeFanfare() { [523.25, 659.25, 783.99, 987.77, 1046.5, 1318.51].forEach((f, i) => tone(f, 1.6, i * .1, .085)); }
 function toggleSound() {
   sound = !sound; const b = $('snd');
   b.textContent = sound ? 'Chimes on' : 'Muted'; b.setAttribute('aria-pressed', sound);
+  if (sound) tone(587.33, .25, 0, .05);
 }
 
 /* ---- scheduled live reveal ---- */
@@ -254,10 +272,10 @@ if (CONFIG.revealAt && new Date(CONFIG.revealAt) - Date.now() > 0) {
 
 /* ---- sequence ---- */
 function start() {
-  if (state !== 'idle') return; state = 'counting'; ctx();
+  if (state !== 'idle') return; state = 'counting'; ensureAudio();
   $('seal').classList.add('hidden'); $('count').classList.remove('hidden'); $('guess').classList.add('hidden');
   $('card').classList.add('glow'); $('catL').classList.add('lean'); $('catR').classList.add('lean');
-  $('hint').textContent = 'Listening closely for the secret…';
+  $('hint').textContent = 'Listening closely for the secret… (turn up media volume if needed)';
   moteT = setInterval(() => {
     const m = document.createElement('div'), s = Math.random() * 7 + 4;
     m.className = 'mote'; m.style.cssText = `width:${s}px;height:${s}px;left:calc(50% + ${(Math.random() - .5) * 220}px);top:calc(50% + ${(Math.random() - .5) * 60 + 20}px)`;
